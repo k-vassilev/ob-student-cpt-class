@@ -11,6 +11,7 @@
 require 'includes/class-ob-custom-post-type.php';
 require 'includes/class-ob-student-shortcode.php';
 require 'includes/class-ob-metabox.php';
+require 'includes/class-ob-student-widget.php';
 
 /**
  * Enqueue javascript
