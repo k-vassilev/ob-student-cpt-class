@@ -1,5 +1,4 @@
 jQuery('input[name="activeStudent"]').on('change', (e) => {
-	console.log(e.target.id);
     const isActive = e.target.checked
     const studentID = e.target.id.split('_')[1]
 

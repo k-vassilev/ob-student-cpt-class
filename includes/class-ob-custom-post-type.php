@@ -1,6 +1,10 @@
 <?php
-class Custom_Post_Type {
- 
+
+/**
+ * Creates instance of custom post type student
+ */
+class Ob_Custom_Post_Type {
+
 	public function __construct() {
 		add_action( 'init', array( $this, 'ob_student_post_type' ) );
 		add_action( 'init', array( $this, 'ob_enrolment_taxonomy' ) );
@@ -10,10 +14,10 @@ class Custom_Post_Type {
 	}
 
 	/**
- 	* Creates the student post type
- 	*
- 	* @return void
- 	*/
+	 * Creates the student post type
+	 *
+	 * @return void
+	 */
 	public function ob_student_post_type() {
 
 		$args = array(
@@ -31,10 +35,10 @@ class Custom_Post_Type {
 	}
 
 	/**
- 	* Adds enrolment taxonomy
- 	*
- 	* @return void
- 	*/
+	 * Adds enrolment taxonomy
+	 *
+	 * @return void
+	 */
 	public function ob_enrolment_taxonomy() {
 
 		$args = array(
@@ -49,11 +53,11 @@ class Custom_Post_Type {
 	}
 
 	/**
- 	* Tackles the "header" of the column
- 	*
- 	* @param object $columns is the custom enable/disable column.
- 	* @return void
- 	*/
+	 * Tackles the "header" of the column
+	 *
+	 * @param object $columns is the custom enable/disable column.
+	 * @return void
+	 */
 	public function ob_student_custom_column_head( $columns ) {
 		// $columns contains all currently available columns (Default).
 		$columns['enable_student'] = 'Active Student'; // Adding to all currently present.
@@ -61,18 +65,18 @@ class Custom_Post_Type {
 	}
 
 	/**
- 	* Checks if the status of a given student is active or not (true or false)
- 	*
- 	* @param object $column is the custom enable/disable column.
- 	* @param object $post_id is the id of the WordPress post.
- 	* @return void
- 	*/
+	 * Checks if the status of a given student is active or not (true or false)
+	 *
+	 * @param object $column is the custom enable/disable column.
+	 * @param object $post_id is the id of the WordPress post.
+	 * @return void
+	 */
 	public function ob_student_custom_column_data( $column, $post_id ) {
 		$current_status = get_post_meta( $post_id, '_is_active_student', true );
 		switch ( $column ) {
 			case 'enable_student':
 				?>
-				<input type="checkbox" name="activeStudent" id="activeStudent_<?php echo $post_id; ?>" 
+				<input type="checkbox" name="activeStudent" id="activeStudent_<?php echo esc_textarea( $post_id ); ?>" 
 				<?php
 				if (
 					'true' === $current_status ) {
@@ -84,18 +88,17 @@ class Custom_Post_Type {
 	}
 
 	/**
- 	* AJAX handler
- 	*
- 	* @return void
- 	*/
+	 * AJAX handler
+	 *
+	 * @return void
+	 */
 	public function checkbox() {
-		$checkbox_value = sanitize_text_field( $_POST['isActive'] );
-		$student_id = $_POST['studentId'];
+		$checkbox_value = sanitize_text_field( wp_unslash( $_POST['isActive'] ) );
+		$student_id     = sanitize_text_field( wp_unslash( $_POST['studentId'] ) );
 		update_post_meta( $student_id, '_is_active_student', $checkbox_value );
-	
-		echo (wp_send_json_success( $checkbox_value, $student_id ));
+
+		echo ( wp_send_json_success( $checkbox_value, $student_id ) );
 	}
 }
- 
-$ob_custom_post_type = new Custom_Post_Type();
- 
+
+$ob_custom_post_type = new Ob_Custom_Post_Type();

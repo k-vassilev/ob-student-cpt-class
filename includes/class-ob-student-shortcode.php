@@ -1,16 +1,19 @@
 <?php
-class Student_shortcode {
-	
+/**
+ * Shortcode class for displaying a single student
+ */
+class Ob_Student_Shortcode {
+
 	public function __construct() {
 		add_shortcode( 'student', array( $this, 'ob_student_shortcode' ) );
 	}
 
 	/**
- 	* Shortcode logic
- 	*
- 	* @param string $atts are all the attributes used in the function.
- 	* @return void
- 	*/
+	 * Shortcode logic
+	 *
+	 * @param string $atts are all the attributes used in the function.
+	 * @return void
+	 */
 	public function ob_student_shortcode( $atts ) {
 
 		// Adds student_id as attribute.
@@ -32,10 +35,10 @@ class Student_shortcode {
 		$student_query = new WP_Query( $post_info );
 
 		// Returns the content of the student if it exists.
-		if ( ! $student_query -> have_posts() ) {
+		if ( ! $student_query->have_posts() ) {
 			return 'No student found';
 		} else {
-			$student_query -> the_post();?>
+			$student_query->the_post();?>
 			<div style="width:300px;">
 			<h4 style="text-align: center; padding:5px;"><?php the_title(); ?></h4>
 			<?php
@@ -48,4 +51,4 @@ class Student_shortcode {
 	}
 }
 
-$ob_student_shortcode = new Student_shortcode();
+$ob_student_shortcode = new Ob_Student_Shortcode();
